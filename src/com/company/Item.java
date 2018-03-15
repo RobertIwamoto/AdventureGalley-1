@@ -4,12 +4,14 @@ public abstract class Item {
     private String name;
     private String description;
     private boolean edible;
+    private boolean throwable;
 
 
     public Item(String name, String description, boolean edible) {
         this.name = name;
         this.description = description;
         this.edible = edible;
+        this.throwable = throwable;
     }
 
     /*
@@ -40,5 +42,9 @@ public abstract class Item {
 
     public void setEdible(boolean edible) {
         this.edible = edible;
+    }
+
+    public void setThrowable(boolean throwable) {
+        this.throwable = throwable;
     }
 }
