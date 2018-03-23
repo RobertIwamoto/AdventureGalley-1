@@ -1,15 +1,11 @@
 package com.company;
 
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
         Room curRoom = addRooms();
 
-        Scanner reader = new Scanner(System.in);
         Reader input = new Reader();
-//        String username = input.readLine("What is your name?");
         System.out.println(curRoom.getDescription());
 
         //prints out items in starter room for the player to see
@@ -19,11 +15,10 @@ public class Main {
         // offer help, since this is the player's first time playing
         String prompt = input.readLine(curRoom.getDescription()+ " Type your command. If you need help, type 'help.'");
 
-
         while(true) {
-            String[] words = prompt.split(" ");
-            String directObject = words[words.length-1];
-            String verb = words[0];
+            String arr[] = prompt.split(" ", 2);
+            String verb = arr[0];  //This is the throwaway word
+            String directObject = arr[1];
             if(curRoom.hasItem(directObject)) {
                 Item whichItem = curRoom.getItem(directObject);
                 String response = whichItem.handle(verb);
@@ -39,7 +34,7 @@ public class Main {
             }
             else if (verb.equalsIgnoreCase("quit")) {
                 System.out.println("Are you sure you want to quit? (y/n)");
-                String quitPrompt = reader.next();
+                String quitPrompt = input.readLine();
                 if(quitPrompt.equalsIgnoreCase("y")) {
                     System.out.println("Thanks for playing!");
                     break;
@@ -49,14 +44,15 @@ public class Main {
                 }
             }
             else if (verb.equalsIgnoreCase("help")){
-                System.out.println("Type 'look' to explore your surroundings, Type 'quit' to exit the game, Type 'help' for help.");
+                System.out.println(listOfCommands());
             }
             else{
                 System.out.println("You can't do that ");
             }
-            prompt = reader.nextLine();
+            prompt = input.readLine();
         }
     }
+
     //This is a utility method to set up all the rooms and their connections.
     //Returns the main Room.
     private static Room addRooms() {
@@ -67,6 +63,7 @@ public class Main {
 
         home.addItem(new Book());
         home.addItem(new Apple());
+        home.addItem(new BigGreenMagicBook());
 
         arcade.addRoom(home);
         arcade.addRoom(cave);
@@ -75,21 +72,20 @@ public class Main {
         home.addRoom(cave);
         home.addRoom(arcade);
 
-//        home.itemsInRoom.addItem(new Banana());
-//        home.itemsInRoom.addItem(new Item("note", "Welcome to our game.", false));
-//        garage.itemsInRoom.addItem(new Item("Hammer", "A very heavy duty hammer.", false));
-//        garage.itemsInRoom.addItem(new Item("Drill","Does not come with a drill bit.", false));
-//        arcade.itemsInRoom.addItem(new Item("controller", "This is a video game controller or an unknown game system.", false));
-//        arcade.itemsInRoom.addItem(new Item("jacket", " 80's style jacket with teal and purple detailing.", false));
-//        cave.itemsInRoom.addItem(new Item("charcoal stick", " A stick of charcoal that looks like it has been on the walls", false));
-//        cave.itemsInRoom.addItem(new Item("arrowhead", "An arrowhead make out of what seems to be some sort of bone", false));
-
         garage.addRoom(home);
         garage.addRoom(arcade);
 
         cave.addRoom(garage);
         cave.addRoom(home);
         return home;
+    }
+    public static String listOfCommands() {
+            return ("Here's a list of useful commands: \nThe 'Look' command will " +
+                    "give you a description of your surroundings. \nThe 'Examine' command will give you a description of an" +
+                    "object. \nThe 'Inventory' command will give you a list of the items in your inventory and a description of" +
+                    " them. \nThe 'Restart' command will restart the game \nThe 'Quit' command will quit the game for you. Make " +
+                    "sure you save before you quit!");
+
 
     }
 }
