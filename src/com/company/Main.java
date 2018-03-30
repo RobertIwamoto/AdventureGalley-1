@@ -1,9 +1,11 @@
 package com.company;
 
+import com.company.Interactions.Item;
+
 public class Main {
 
     public static void main(String[] args) {
-        Room curRoom = addRooms();
+        Room curRoom = World.getWorld("Crazy").getStartingRoom();
 
         Reader input = new Reader();
         System.out.println(curRoom.getDescription());
@@ -13,12 +15,13 @@ public class Main {
         System.out.println(curRoom.listItemsInRoom());
 
         // offer help, since this is the player's first time playing
-        String prompt = input.readLine(curRoom.getDescription()+ " Type your command. If you need help, type 'help.'");
+        String prompt = input.readLine(curRoom.getDescription()+ " Type your command. If you need help, type 'help'.");
 
         while(true) {
             String arr[] = prompt.split(" ", 2);
             String verb = arr[0];  //This is the throwaway word
             String directObject = arr[1];
+
             if(curRoom.hasItem(directObject)) {
                 Item whichItem = curRoom.getItem(directObject);
                 String response = whichItem.handle(verb);
@@ -53,32 +56,7 @@ public class Main {
         }
     }
 
-    //This is a utility method to set up all the rooms and their connections.
-    //Returns the main Room.
-    private static Room addRooms() {
-        Room home = new Room("home", "You are in a simple gray room.");
-        Room cave = new Room("cave", "This room glitters with jewels.");
-        Room arcade = new Room("arcade","This  room is full of skee ball courts");
-        Room garage = new Room("garage","this room is full of cardboard boxes");
-
-        home.addItem(new Book());
-        home.addItem(new Apple());
-        home.addItem(new BigGreenMagicBook());
-
-        arcade.addRoom(home);
-        arcade.addRoom(cave);
-
-        home.addRoom(garage);
-        home.addRoom(cave);
-        home.addRoom(arcade);
-
-        garage.addRoom(home);
-        garage.addRoom(arcade);
-
-        cave.addRoom(garage);
-        cave.addRoom(home);
-        return home;
-    }
+    
     public static String listOfCommands() {
             return ("Here's a list of useful commands: \nThe 'Look' command will " +
                     "give you a description of your surroundings. \nThe 'Examine' command will give you a description of an" +

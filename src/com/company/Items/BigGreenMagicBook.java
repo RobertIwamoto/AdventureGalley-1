@@ -1,4 +1,6 @@
-package com.company;
+package com.company.Items;
+
+import com.company.Interactions.Item;
 
 public class BigGreenMagicBook extends Item {
 
